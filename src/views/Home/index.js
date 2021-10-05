@@ -1,5 +1,9 @@
 import { Grid } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
+// React Redux
+import { connect } from "react-redux";
+import { getData, setFilter } from "../../store/home/actions";
+
 import { makeStyles } from "@material-ui/core/styles";
 import InputComponent from "../../components/input";
 import ListComponent from "../../components/ListComponent";
@@ -15,9 +19,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Home = () => {
+// Connect states and dispatch to props
+const mapState = (state) => ({
+  data: state.dataReducer.data,
+  filter: state.dataReducer.filter,
+});
+
+const mapDispatch = {
+  getData: getData,
+  setFilter: setFilter,
+};
+
+const connector = connect(mapState, mapDispatch);
+const Home = (props) => {
   const classes = useStyles();
+  console.log(props?.data);
   const [data, setData] = useState([]);
+  const [alignment, setAlignment] = React.useState("left");
+
+  const handleAlignment = (event, newAlignment) => {
+    setAlignment(newAlignment);
+    props?.setFilter(newAlignment);
+  };
 
   const handleToggle = (value) => {
     console.log(value);
@@ -26,23 +49,21 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/todos")
-      .then((response) => response.json())
-      .then((json) => setData(json.slice(0, 10)));
+    props.getData();
   }, []);
 
   return (
     <Grid className={classes.root}>
       <InputComponent />
       <Grid className={classes.toogle}>
-        <ToogleButton />
+        <ToogleButton alignment={alignment} handleAlignment={handleAlignment} />
       </Grid>
-      {data.length > 0 &&
-        data.map((item) => (
+      {props?.data.length > 0 &&
+        props?.data.map((item) => (
           <ListComponent item={item} handleToggle={handleToggle} />
         ))}
     </Grid>
   );
 };
 
-export default Home;
+export default connector(Home);

@@ -1,18 +1,8 @@
 import React from "react";
-import FormatAlignLeftIcon from "@material-ui/icons/FormatAlignLeft";
-import FormatAlignCenterIcon from "@material-ui/icons/FormatAlignCenter";
-import FormatAlignRightIcon from "@material-ui/icons/FormatAlignRight";
-import FormatAlignJustifyIcon from "@material-ui/icons/FormatAlignJustify";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 
-export default function ToggleButtons() {
-  const [alignment, setAlignment] = React.useState("left");
-
-  const handleAlignment = (event, newAlignment) => {
-    setAlignment(newAlignment);
-  };
-
+export default function ToggleButtons({ alignment, handleAlignment }) {
   return (
     <ToggleButtonGroup
       value={alignment}
@@ -20,15 +10,9 @@ export default function ToggleButtons() {
       onChange={handleAlignment}
       aria-label="text alignment"
     >
-      <ToggleButton value="left">
-        All
-      </ToggleButton>
-      <ToggleButton value="center">
-        Active
-      </ToggleButton>
-      <ToggleButton value="right">
-        Completed
-      </ToggleButton>
+      <ToggleButton value="left">All</ToggleButton>
+      <ToggleButton value="center">Active</ToggleButton>
+      <ToggleButton value="right">Completed</ToggleButton>
     </ToggleButtonGroup>
   );
 }
