@@ -13,6 +13,9 @@ const useStyles = makeStyles(() => ({
   root: {
     textDecoration: "line-through",
   },
+  container: {
+    listStyleType: "none !important",
+  },
 }));
 
 const ListComponent = ({ item, handleToggle, handleDelete }) => {
@@ -24,6 +27,7 @@ const ListComponent = ({ item, handleToggle, handleDelete }) => {
         key={item?.id}
         role={undefined}
         dense
+        classes={{ container: classes.container }}
         button
         onClick={() => handleToggle(item)}
       >

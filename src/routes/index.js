@@ -2,7 +2,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "../store/index";
 import Home from "../views/Home";
-import { loadState, saveState } from "../store/localStorage";
+import { saveState } from "../store/localStorage";
 
 store.subscribe(() => {
   saveState({

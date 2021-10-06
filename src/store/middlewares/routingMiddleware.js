@@ -1,4 +1,3 @@
-import { Middleware } from "redux";
 import { history } from "../history";
 
 export const ROUTING = "ROUTING";

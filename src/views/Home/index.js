@@ -32,48 +32,72 @@ const mapDispatch = {
 };
 
 const connector = connect(mapState, mapDispatch);
+let counter = 100;
 const Home = (props) => {
   const classes = useStyles();
   const [FilterData, setFilterData] = useState([]);
+  const [inputValue, setInputValue] = useState("");
 
   const handleAlignment = (event, newAlignment) => {
     props?.setFilter(newAlignment);
-    if (newAlignment == "left") {
-      setFilterData(props?.data);
-    } else if (newAlignment == "center") {
-      setFilterData(props?.data.filter((item) => item.completed === false));
-    } else {
-      setFilterData(props?.data.filter((item) => item.completed === true));
-    }
   };
 
   const handleToggle = (value) => {
-    console.log(value);
-    // const present = data.find((o) => o.id === value);
-    // set
+    var arr = props?.data.forEach((element, index) => {
+      if (element.id === value.id) {
+        element.completed = !value.completed;
+      }
+    });
+    props?.setData(Object.assign({}, arr));
   };
 
   const handleDelete = (value) => {
-    props?.setData(props?.data.filter((item) => item.id != value.id));
+    props?.setData(props?.data.filter((item) => item.id !== value.id));
+  };
+
+  const handleAdd = (event) => {
+    if (event.key === "Enter" && event.target.value !== "") {
+      props?.setData([
+        ...props.data,
+        {
+          completed: false,
+          id: counter,
+          title: event.target.value,
+          userId: 1,
+        },
+      ]);
+      counter = counter + 1;
+      setInputValue("");
+    }
+  };
+
+  const handleChange = (event) => {
+    setInputValue(event.target.value);
   };
 
   useEffect(() => {
-    props.getData();
+    if (props.data.length === 0) {
+      props.getData();
+    }
   }, []);
 
   useEffect(() => {
-    if (props?.filter == "left") {
+    if (props?.filter === "left") {
       setFilterData(props?.data);
-    } else if (props?.filter == "center") {
+    } else if (props?.filter === "center") {
       setFilterData(props?.data.filter((item) => item.completed === false));
     } else {
       setFilterData(props?.data.filter((item) => item.completed === true));
     }
-  }, [props?.data]);
+  }, [props?.data, props?.filter]);
 
   return (
     <Grid className={classes.root}>
-      <InputComponent />
+      <InputComponent
+        inputValue={inputValue}
+        handleAdd={handleAdd}
+        handleChange={handleChange}
+      />
       <Grid className={classes.toogle}>
         <ToogleButton
           alignment={props?.filter}
