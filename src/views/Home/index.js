@@ -38,7 +38,9 @@ const Home = (props) => {
 
   const handleAlignment = (event, newAlignment) => {
     props?.setFilter(newAlignment);
-    if (newAlignment == "center") {
+    if (newAlignment == "left") {
+      setFilterData(props?.data);
+    } else if (newAlignment == "center") {
       setFilterData(props?.data.filter((item) => item.completed === false));
     } else {
       setFilterData(props?.data.filter((item) => item.completed === true));
@@ -59,6 +61,16 @@ const Home = (props) => {
     props.getData();
   }, []);
 
+  useEffect(() => {
+    if (props?.filter == "left") {
+      setFilterData(props?.data);
+    } else if (props?.filter == "center") {
+      setFilterData(props?.data.filter((item) => item.completed === false));
+    } else {
+      setFilterData(props?.data.filter((item) => item.completed === true));
+    }
+  }, [props?.data]);
+
   return (
     <Grid className={classes.root}>
       <InputComponent />
@@ -68,23 +80,14 @@ const Home = (props) => {
           handleAlignment={handleAlignment}
         />
       </Grid>
-      {props?.filter == "center" || props?.filter == "right"
-        ? FilterData.length > 0 &&
-          FilterData.map((item) => (
-            <ListComponent
-              item={item}
-              handleToggle={handleToggle}
-              handleDelete={handleDelete}
-            />
-          ))
-        : props?.data.length > 0 &&
-          props?.data.map((item) => (
-            <ListComponent
-              item={item}
-              handleToggle={handleToggle}
-              handleDelete={handleDelete}
-            />
-          ))}
+      {FilterData.length > 0 &&
+        FilterData.map((item) => (
+          <ListComponent
+            item={item}
+            handleToggle={handleToggle}
+            handleDelete={handleDelete}
+          />
+        ))}
     </Grid>
   );
 };
