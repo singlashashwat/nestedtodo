@@ -1,8 +1,8 @@
-import { GET_DATA, SET_FILTER } from "./types";
+import { GET_DATA, SET_DATA, SET_FILTER } from "./types";
 
 const initialDatasetState = {
   data: [],
-  filter: "",
+  filter: "left",
   errorMessage: "",
 };
 
@@ -16,6 +16,11 @@ export function dataReducer(state = initialDatasetState, action) {
       });
     case `${GET_DATA}_FAILURE`:
       return Object.assign({}, state, { errorMessage: action.error });
+
+    case SET_DATA:
+      return Object.assign({}, state, {
+        data: action.data.data,
+      });
 
     case SET_FILTER:
       return Object.assign({}, state, {

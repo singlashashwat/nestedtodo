@@ -1,4 +1,4 @@
-import { GET_DATA, SET_FILTER } from "./types";
+import { GET_DATA, SET_DATA, SET_FILTER } from "./types";
 
 export function getData() {
   return {
@@ -6,6 +6,15 @@ export function getData() {
     async: true,
     url: `https://jsonplaceholder.typicode.com/todos`,
     method: "GET",
+  };
+}
+
+export function setData(data) {
+  return {
+    type: SET_DATA,
+    data: {
+      data,
+    },
   };
 }
 

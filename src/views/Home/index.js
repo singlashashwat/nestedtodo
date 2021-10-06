@@ -2,7 +2,7 @@ import { Grid } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 // React Redux
 import { connect } from "react-redux";
-import { getData, setFilter } from "../../store/home/actions";
+import { getData, setData, setFilter } from "../../store/home/actions";
 
 import { makeStyles } from "@material-ui/core/styles";
 import InputComponent from "../../components/input";
@@ -27,25 +27,32 @@ const mapState = (state) => ({
 
 const mapDispatch = {
   getData: getData,
+  setData: setData,
   setFilter: setFilter,
 };
 
 const connector = connect(mapState, mapDispatch);
 const Home = (props) => {
   const classes = useStyles();
-  console.log(props?.data);
-  const [data, setData] = useState([]);
-  const [alignment, setAlignment] = React.useState("left");
+  const [FilterData, setFilterData] = useState([]);
 
   const handleAlignment = (event, newAlignment) => {
-    setAlignment(newAlignment);
     props?.setFilter(newAlignment);
+    if (newAlignment == "center") {
+      setFilterData(props?.data.filter((item) => item.completed === false));
+    } else {
+      setFilterData(props?.data.filter((item) => item.completed === true));
+    }
   };
 
   const handleToggle = (value) => {
     console.log(value);
     // const present = data.find((o) => o.id === value);
     // set
+  };
+
+  const handleDelete = (value) => {
+    props?.setData(props?.data.filter((item) => item.id != value.id));
   };
 
   useEffect(() => {
@@ -56,12 +63,28 @@ const Home = (props) => {
     <Grid className={classes.root}>
       <InputComponent />
       <Grid className={classes.toogle}>
-        <ToogleButton alignment={alignment} handleAlignment={handleAlignment} />
+        <ToogleButton
+          alignment={props?.filter}
+          handleAlignment={handleAlignment}
+        />
       </Grid>
-      {props?.data.length > 0 &&
-        props?.data.map((item) => (
-          <ListComponent item={item} handleToggle={handleToggle} />
-        ))}
+      {props?.filter == "center" || props?.filter == "right"
+        ? FilterData.length > 0 &&
+          FilterData.map((item) => (
+            <ListComponent
+              item={item}
+              handleToggle={handleToggle}
+              handleDelete={handleDelete}
+            />
+          ))
+        : props?.data.length > 0 &&
+          props?.data.map((item) => (
+            <ListComponent
+              item={item}
+              handleToggle={handleToggle}
+              handleDelete={handleDelete}
+            />
+          ))}
     </Grid>
   );
 };
