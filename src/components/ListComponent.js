@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ListComponent = ({ item, handleToggle, handleDelete }) => {
+const ListComponent = ({ item, handleToggle, handleDelete, index }) => {
   const classes = useStyles();
 
   return (
@@ -29,7 +29,7 @@ const ListComponent = ({ item, handleToggle, handleDelete }) => {
         dense
         classes={{ container: classes.container }}
         button
-        onClick={() => handleToggle(item)}
+        onClick={() => handleToggle(item, index)}
       >
         <ListItemIcon>
           <Checkbox

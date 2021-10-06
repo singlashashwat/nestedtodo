@@ -42,13 +42,13 @@ const Home = (props) => {
     props?.setFilter(newAlignment);
   };
 
-  const handleToggle = (value) => {
-    var arr = props?.data.forEach((element, index) => {
-      if (element.id === value.id) {
-        element.completed = !value.completed;
-      }
+  const handleToggle = (value, index) => {
+    const mapping = props?.data[index];
+    const newMappings = props?.data.map((item, i) => {
+      if (i !== index) return item;
+      return Object.assign({}, mapping, { completed: !value.completed });
     });
-    props?.setData(Object.assign({}, arr));
+    props?.setData(newMappings);
   };
 
   const handleDelete = (value) => {
@@ -105,8 +105,10 @@ const Home = (props) => {
         />
       </Grid>
       {FilterData.length > 0 &&
-        FilterData.map((item) => (
+        FilterData.map((item, index) => (
           <ListComponent
+            key={item.id}
+            index={index}
             item={item}
             handleToggle={handleToggle}
             handleDelete={handleDelete}
