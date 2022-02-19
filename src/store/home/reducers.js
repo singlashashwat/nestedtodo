@@ -6,6 +6,11 @@ const initialDatasetState = {
   errorMessage: "",
 };
 
+export const selectors = {
+  dataResult: (state) => state['dataReducer'].data,
+};
+
+
 export function dataReducer(state = initialDatasetState, action) {
   switch (action.type) {
     case GET_DATA:

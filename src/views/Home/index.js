@@ -1,15 +1,16 @@
 import { Grid } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 // React Redux
-import { connect } from "react-redux";
-import { getData, setData } from "../../store/home/actions";
+import { useSelector, useDispatch } from "react-redux";
+import { selectors } from "../../store/home/reducers";
+import { actions } from "../../store/home/actions";
 
 import { makeStyles } from "@material-ui/core/styles";
 import InputComponent from "../../components/input";
 import ListComponent from "../../components/ListComponent";
 import DialogComponent from "../../components/DialogComponent";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     padding: "20px",
   },
@@ -19,24 +20,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// Connect states and dispatch to props
-const mapState = (state) => ({
-  data: state.dataReducer.data,
-  filter: state.dataReducer.filter,
-});
-
-const mapDispatch = {
-  getData: getData,
-  setData: setData,
-};
-
-const connector = connect(mapState, mapDispatch);
 let counter = 100;
 const Home = (props) => {
   const classes = useStyles();
-  const [FilterData, setFilterData] = useState([]);
+  const dispatch = useDispatch();
+
   const [inputValue, setInputValue] = useState("");
   const [showDialog, setShowDialog] = useState(false);
+
+  var DataResult = useSelector(selectors.dataResult);
 
   const handleToggle = (value, index) => {
     const mapping = props?.data[index];
@@ -80,9 +72,7 @@ const Home = (props) => {
   };
 
   useEffect(() => {
-    // if (props.data.length === 0) {
-    props.getData();
-    // }
+    dispatch(actions.getData());
   }, []);
 
   return (
@@ -92,8 +82,8 @@ const Home = (props) => {
         handleAdd={handleAdd}
         handleChange={handleChange}
       />
-      {props.data.length > 0 &&
-        props.data.map((item, index) => (
+      {DataResult.length > 0 &&
+        DataResult.map((item, index) => (
           <ListComponent
             key={item.id}
             index={index}
@@ -113,4 +103,4 @@ const Home = (props) => {
   );
 };
 
-export default connector(Home);
+export default Home;

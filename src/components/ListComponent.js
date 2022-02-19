@@ -33,7 +33,6 @@ const ListComponent = ({
   index,
 }) => {
   const classes = useStyles();
-  console.log("items", item);
   return (
     <>
       {item.subitems != null ? (

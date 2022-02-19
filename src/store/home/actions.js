@@ -1,16 +1,11 @@
 import { GET_DATA, SET_DATA } from "./types";
 
-export function getData() {
-  return {
+export const actions = {
+  getData: () => ({
     type: GET_DATA,
-  };
-}
-
-export function setData(data) {
-  return {
+  }),
+  setData: (data) => ({
     type: SET_DATA,
-    data: {
-      data,
-    },
-  };
-}
+    payload: data,
+  }),
+};
