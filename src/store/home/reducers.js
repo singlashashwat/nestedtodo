@@ -20,7 +20,7 @@ export function dataReducer(state = initialDatasetState, action) {
 
     case SET_DATA:
       return Object.assign({}, state, {
-        data: action.data.data,
+        data: action.payload,
       });
     default:
       return state;
