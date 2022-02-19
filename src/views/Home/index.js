@@ -30,14 +30,12 @@ const Home = () => {
 
   var DataResult = useSelector(selectors.dataResult);
 
-  const handleToggle = (value, sindex, index) => {
+  const handleDeleteSubItem = (value, sindex, index) => {
     const mapping = value.subitems[sindex];
-    const newMappings = value.subitems.map((item, i) => {
-      if (i !== sindex) return item;
-      return Object.assign({}, mapping, {
-        completed: !value.subitems[sindex].completed,
-      });
-    });
+    debugger;
+    const newMappings = value.subitems.filter(
+      (item, index) => index !== sindex
+    );
     const newMappings1 = DataResult.map((item, i) => {
       if (i !== index) return item;
       return Object.assign({}, item, { subitems: newMappings });
@@ -98,9 +96,9 @@ const Home = () => {
             key={item.id}
             index={index}
             item={item}
-            handleToggle={handleToggle}
             handleDelete={handleDelete}
             handleAddSubItem={handleAddSubItem}
+            handleDeleteSubItem={handleDeleteSubItem}
           />
         ))}
       {showDialog && (

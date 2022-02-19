@@ -2,14 +2,8 @@ import React from "react";
 import ListItem from "@material-ui/core/ListItem";
 import List from "@material-ui/core/List";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
 import Checkbox from "@material-ui/core/Checkbox";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import Collapse from "@material-ui/core/Collapse";
 import { makeStyles } from "@material-ui/core/styles";
 import { Divider } from "@material-ui/core";
 
@@ -27,9 +21,9 @@ const useStyles = makeStyles((theme) => ({
 
 const ListComponent = ({
   item,
-  handleToggle,
   handleDelete,
   handleAddSubItem,
+  handleDeleteSubItem,
   index,
 }) => {
   const classes = useStyles();
@@ -58,7 +52,7 @@ const ListComponent = ({
                 <ListItem button key={sitem.id} className={classes.nested}>
                   <ListItemIcon
                     button
-                    onClick={() => handleToggle(item, sindex, index)}
+                    onClick={() => handleDeleteSubItem(item, sindex, index)}
                   >
                     <Checkbox
                       edge="start"
