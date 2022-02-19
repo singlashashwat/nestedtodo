@@ -37,12 +37,8 @@ const ListComponent = ({
     <>
       {item.subitems != null ? (
         <div key={item.id}>
-          <ListItem
-            button
-            key={item.id}
-            // onClick={this.handleClick.bind(this, item.name)}
-          >
-            <ListItemIcon button onClick={() => handleToggle(item, index)}>
+          <ListItem key={item.id}>
+            <ListItemIcon button onClick={() => handleDelete(item)}>
               <Checkbox
                 edge="start"
                 checked={item?.completed}
@@ -57,16 +53,16 @@ const ListComponent = ({
             />
           </ListItem>
           <List component="div" disablePadding>
-            {item.subitems.map((sitem) => {
+            {item.subitems.map((sitem, sindex) => {
               return (
                 <ListItem button key={sitem.id} className={classes.nested}>
                   <ListItemIcon
                     button
-                    onClick={() => handleToggle(item, index)}
+                    onClick={() => handleToggle(item, sindex, index)}
                   >
                     <Checkbox
                       edge="start"
-                      checked={item?.completed}
+                      checked={sitem?.completed}
                       tabIndex={-1}
                       disableRipple
                     />
@@ -98,15 +94,6 @@ const ListComponent = ({
             primary={item?.title}
             classes={{ primary: item?.completed ? classes.root : null }}
           />
-          {/* <ListItemSecondaryAction>
-            <IconButton
-              edge="end"
-              aria-label="comments"
-              onClick={() => handleDelete(item)}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </ListItemSecondaryAction> */}
         </ListItem>
       )}
       <Divider />

@@ -8,10 +8,12 @@ const MockData = [
       {
         id: 1,
         name: "Iphone 6",
+        completed: false,
       },
       {
         id: 2,
         name: "Iphone 10",
+        completed: false,
       },
     ],
   },
@@ -30,10 +32,12 @@ const MockData = [
       {
         id: 1,
         name: "Android 1",
+        completed: false,
       },
       {
         id: 2,
         name: "Android 15",
+        completed: false,
       },
     ],
   },

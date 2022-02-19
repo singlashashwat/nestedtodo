@@ -30,18 +30,22 @@ const Home = () => {
 
   var DataResult = useSelector(selectors.dataResult);
 
-  const handleToggle = (value, index) => {
-    const mapping = DataResult[index];
-    const newMappings = DataResult.map((item, i) => {
-      if (i !== index) return item;
-      return Object.assign({}, mapping, { completed: !value.completed });
+  const handleToggle = (value, sindex, index) => {
+    const mapping = value.subitems[sindex];
+    const newMappings = value.subitems.map((item, i) => {
+      if (i !== sindex) return item;
+      return Object.assign({}, mapping, {
+        completed: !value.subitems[sindex].completed,
+      });
     });
-    // props?.setData(newMappings);
-    dispatch(actions.setData(newMappings));
+    const newMappings1 = DataResult.map((item, i) => {
+      if (i !== index) return item;
+      return Object.assign({}, item, { subitems: newMappings });
+    });
+    dispatch(actions.setData(newMappings1));
   };
 
   const handleDelete = (value) => {
-    // props?.setData(props?.data.filter((item) => item.id !== value.id));
     dispatch(
       actions.setData(DataResult.filter((item) => item.id !== value.id))
     );
