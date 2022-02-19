@@ -2,12 +2,12 @@ import { Grid } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 // React Redux
 import { connect } from "react-redux";
-import { getData, setData, setFilter } from "../../store/home/actions";
+import { getData, setData } from "../../store/home/actions";
 
 import { makeStyles } from "@material-ui/core/styles";
 import InputComponent from "../../components/input";
 import ListComponent from "../../components/ListComponent";
-import ToogleButton from "../../components/ToogleButton";
+import DialogComponent from "../../components/DialogComponent";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,7 +28,6 @@ const mapState = (state) => ({
 const mapDispatch = {
   getData: getData,
   setData: setData,
-  setFilter: setFilter,
 };
 
 const connector = connect(mapState, mapDispatch);
@@ -37,10 +36,7 @@ const Home = (props) => {
   const classes = useStyles();
   const [FilterData, setFilterData] = useState([]);
   const [inputValue, setInputValue] = useState("");
-
-  const handleAlignment = (event, newAlignment) => {
-    props?.setFilter(newAlignment);
-  };
+  const [showDialog, setShowDialog] = useState(false);
 
   const handleToggle = (value, index) => {
     const mapping = props?.data[index];
@@ -75,21 +71,19 @@ const Home = (props) => {
     setInputValue(event.target.value);
   };
 
-  useEffect(() => {
-    if (props.data.length === 0) {
-      props.getData();
-    }
-  }, []);
+  const handleAddSubItem = (value, index) => {
+    setShowDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setShowDialog(false);
+  };
 
   useEffect(() => {
-    if (props?.filter === "left") {
-      setFilterData(props?.data);
-    } else if (props?.filter === "center") {
-      setFilterData(props?.data.filter((item) => item.completed === false));
-    } else {
-      setFilterData(props?.data.filter((item) => item.completed === true));
-    }
-  }, [props?.data, props?.filter]);
+    // if (props.data.length === 0) {
+    props.getData();
+    // }
+  }, []);
 
   return (
     <Grid className={classes.root}>
@@ -98,22 +92,23 @@ const Home = (props) => {
         handleAdd={handleAdd}
         handleChange={handleChange}
       />
-      <Grid className={classes.toogle}>
-        <ToogleButton
-          alignment={props?.filter}
-          handleAlignment={handleAlignment}
-        />
-      </Grid>
-      {FilterData.length > 0 &&
-        FilterData.map((item, index) => (
+      {props.data.length > 0 &&
+        props.data.map((item, index) => (
           <ListComponent
             key={item.id}
             index={index}
             item={item}
             handleToggle={handleToggle}
             handleDelete={handleDelete}
+            handleAddSubItem={handleAddSubItem}
           />
         ))}
+      {showDialog && (
+        <DialogComponent
+          showDialog={showDialog}
+          handleCloseDialog={handleCloseDialog}
+        />
+      )}
     </Grid>
   );
 };
